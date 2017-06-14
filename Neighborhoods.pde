@@ -64,12 +64,12 @@ void Moore(Cell c){
          if(cells[a][b].colour != dead)
            neighbors++;           
          }
-       else if(simulationType.equals("drx") && growth) {         
+       else if((simulationType.equals("drx") && growth) || simulationType.equals("monte")){         
           c.neighbors[n][0] = a;
           c.neighbors[n][1] = b;
           c.neighbors[n][2] = cells[a][b].colour; 
           n++;
-          if(c.colour == crystalColor){
+          if(c.colour == crystalColor && simulationType.equals("drx")){
             cellsBuffer[a][b].colour = c.colour;
             cellsBuffer[a][b].wasCrystalized = true;
             cellsBuffer[a][b].dislocationDensity = 1.0;        

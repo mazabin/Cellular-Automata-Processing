@@ -20,18 +20,10 @@ void copyBuffer(){
       cells[x][y].y = cellsBuffer[x][y].y;
       cells[x][y].colour = cellsBuffer[x][y].colour;
       cells[x][y].dislocationDensity = cellsBuffer[x][y].dislocationDensity;
+      cells[x][y].wasChecked = cellsBuffer[x][y].wasChecked;
+      cells[x][y].numberOfChecks = cellsBuffer[x][y].numberOfChecks;
     }
   }
-}
-
-void monteIteration(){
-  println("Monte Carlo not implemented");
-  /*
-  Zaczynamy od szumu
-  ~~50 różnych kolorów
-  Losowo odpytujemy komórki - tak by były sprawdzone pzrynajmniej raz
-  Sprawdzamy energię otoczenia - sąsiadów  
-  */
 }
 
 void wolframIteration(){
@@ -59,6 +51,7 @@ void initializeSeeds(){
            cellsBuffer[x][y].colour = cells[x][y].colour;
         }
       }
+      seedsNumber = (width/cellSize)*(height/cellSize);
     }
 
   else if(simulationType.equals("wolfram")){

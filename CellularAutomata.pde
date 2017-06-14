@@ -28,6 +28,7 @@ public void setup(){
   surface.setResizable(true);
   cells = new Cell[width/cellSize][height/cellSize];
   cellsBuffer = new Cell[width/cellSize][height/cellSize];
+  lengthOfArray = (width/cellSize)*(height/cellSize);
   setColours();
   createGUI();    
   //stroke(48);
@@ -78,33 +79,37 @@ public void draw(){
           information = "Trwa symulacja: " + simulationName;        
         
         //DEBUG
-       // pause = true;
+        //pause = true;
         
        //STOPPING SIMULATION AT FULL BOARD
-        int aliveCells = 0;
-        for(int i=0; i<width/cellSize; i++){
-          for(int j=0; j<height/cellSize; j++){
-            if(cells[i][j].colour!=dead)
-              aliveCells++;
+       if(!simulationType.equals("monte")) {
+          int aliveCells = 0;
+          for(int i=0; i<width/cellSize; i++){
+            for(int j=0; j<height/cellSize; j++){
+              if(cells[i][j].colour!=dead)
+                aliveCells++;
+            }
           }
-        }
-        if(aliveCells == 0){
-          limitReached = true;
-          maxIterations = iterationCnt+1;
-        }
-        if(aliveCells == (width/cellSize)*(height/cellSize) && !simulationType.equals("drx")){
-          if(!limitReached){
-            maxIterations = iterationCnt+1;
+          if(aliveCells == 0){
             limitReached = true;
+            maxIterations = iterationCnt+1;
           }
-        }       
-        lastRecordedTime = millis();
-      } //<>//
+          if(aliveCells == (width/cellSize)*(height/cellSize) && !simulationType.equals("drx")){
+            if(!limitReached){
+              maxIterations = iterationCnt+1;
+              limitReached = true;
+            }
+          }       
+          lastRecordedTime = millis();
+        }
+        else {
+          println("monte simulation");  
+        }
+      }
       else if(iterationCnt == 0 && pause)
         information = "Wybierz symulację i wciśnij start, aby rozpocząć.";
       else if(iterationCnt!=maxIterations && pause)
-        information = "Pauza aktywna. Kliknij start, by wznowić symulację.";
-      
+        information = "Pauza aktywna. Kliknij start, by wznowić symulację.";      
     }
   }
   

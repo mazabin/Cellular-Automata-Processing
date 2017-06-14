@@ -1,10 +1,10 @@
 boolean mouseEnabled = true;
 boolean pause = true;
 
-int maxIterations = 10000;
+int maxIterations = 1000;
 int seedNumberInPercent = 45;
 int seedsNumber = 0;
-int interval = 150;
+int interval = 70;
 int lastRecordedTime = 0;
 int iterationCnt = 0;
 
@@ -26,9 +26,14 @@ void startSimulation(){
   if(seedsNumber < (width/cellSize)*(height/cellSize) && seedDrawMethod.equals("monte")){
     println("Your board was automatically filled with missing seeds");
     initializeSeeds();
-  }
+  }    
   else
-    pause = false;  
+    pause = false;
+    
+  if(iterationCnt == maxIterations){
+    maxIterations = maxIterations*2;
+    pause = false;
+  }
 }
 public void pauseSimulation(){
   pause = true;

@@ -1,6 +1,6 @@
-int newWidth = width;
-int newHeight = height;
-int cellSize = 4;
+int cellSize = 5;
+int newWidth = width/cellSize;
+int newHeight = height/cellSize;
 boolean resized = false;
 
 void resizeBoard(){
