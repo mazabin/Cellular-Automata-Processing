@@ -1,35 +1,17 @@
 int targetCellX;
 int targetCellY;
 int[][] toShuffle;  
-int lengthOfArray; //<>//
+int lengthOfArray;
 
 void monteIteration(){
   createCoordinatesArray();
-  //checkedCells = (width/cellSize)*(height/cellSize);
-  //while(checkedCells>0)
-  //{
-    Cell cell;
-    for(int i=0; i<lengthOfArray; i++){
-      cell = cells[toShuffle[i][0]][toShuffle[i][1]]; //<>//
-      if((!cells[cell.x][cell.y].wasChecked) || (cells[targetCellX][targetCellY].wasChecked &&  cells[targetCellX][targetCellY].numberOfChecks < 5)){        
-        checkEnergy(cell);
-    }
-  }
-  }
-      //targetCellX = int(random(width/cellSize));
-      ////targetCellY = int(random(height/cellSize));
-      //for(int i=0; i<width/cellSize; i++){
-      //  for(int j=0; j<height/cellSize; j++){
-           //Sprawdzamy energię komórki jeśli
-           //NIE była sprawdzona
-           //BYŁA sprawdzona, ale mniej niż 5 razy
-          //if(!cells[targetCellX][targetCellY].wasChecked) { // || (cells[targetCellX][targetCellY].wasChecked &&  cells[targetCellX][targetCellY].numberOfChecks < 5)) {  
-          //  println("Sprawdzam komórkę (" + targetCellX + ", " + targetCellY + ")");
-          //  checkEnergy(cells[targetCellX][targetCellY]);
-          //}
-        //}
-//      }
-//    }
+  Cell cell;
+  for(int i=0; i<lengthOfArray; i++){
+    cell = cells[toShuffle[i][0]][toShuffle[i][1]];
+    if((!cells[cell.x][cell.y].wasChecked) || (cells[targetCellX][targetCellY].wasChecked &&  cells[targetCellX][targetCellY].numberOfChecks < 5))        
+      checkEnergy(cell);
+   }
+}
  
 void checkEnergy(Cell c){
   color currentCellColour = c.colour;
@@ -63,12 +45,12 @@ int getCellEnergy(Cell c){
 void createCoordinatesArray(){
   toShuffle = new int[lengthOfArray][2];
   int x=0;  //max 800
-  int y=0;  //max 600
+  int y=0;  //max 800
   for(int i=0; i<lengthOfArray; i++){
     toShuffle[i][0] = cells[x][y].x;
     toShuffle[i][1] = cells[x][y].y;
     y++;
-    if(y==120){
+    if(y==(height/cellSize)){
       y=0;
       x++;
     }
@@ -90,11 +72,3 @@ void createCoordinatesArray(){
       }
     }
   }
-
-
-/*
-Zaczynamy od szumu
-~~50 różnych kolorów
-Losowo odpytujemy komórki - tak by były sprawdzone pzrynajmniej raz
-Sprawdzamy energię otoczenia - sąsiadów  
-*/

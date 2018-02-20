@@ -171,7 +171,7 @@ void initializeSeeds(){
         case "mouse":
         {
           clearBoard();
-          println("Click on board to add new seeds");
+          information = "Kliknij, by dodać ziarno";
         }
         break;
       }

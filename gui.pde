@@ -1,16 +1,6 @@
 import g4p_controls.*;
-public void startM_clicked(GButton source, GEvent event) {  
-  println("Simulation started with parameters:\nNumber of seeds:");
-  println((seedNumberInPercent * (width/cellSize) * (height/cellSize))/100+"\n");
-  println("Seeds in percent: " + seedNumberInPercent);
-  println("\nNumber of iterations: " + maxIterations);
-  println("\nSeed draw method: " + seedDrawMethod);
-  if(withRadium)
-    println("\nRadium of seed: " + radium);
-  println("\nChosen simulation: " + simulationType);
-
-  startSimulation();
-  println("\n");
+public void startM_clicked(GButton source, GEvent event) {
+    startSimulation(); //<>//
 }
 
 public void stopM_clicked(GButton source, GEvent event) {
@@ -129,22 +119,27 @@ public void slider_width_changed(GSlider source, GEvent event) {
 
 public void rbtn_cell5_clicked(GOption source, GEvent event) { 
   cellSize = 5;
+  calculateBoard();
 } 
 
 public void rbtn_cell10_clicked(GOption source, GEvent event) {
   cellSize = 10;
+  calculateBoard();
 }
 
-public void rbtn_cell15_clicked(GOption source, GEvent event) { 
-  cellSize = 15;
+public void rbtn_cell16_clicked(GOption source, GEvent event) { 
+  cellSize = 16;
+  calculateBoard();
 }
 
 public void rbtn_cell20_clicked(GOption source, GEvent event) { 
   cellSize = 20;
+  calculateBoard();
 }
 
 public void rbtn_cell25_clicked(GOption source, GEvent event) {
   cellSize = 25;
+  calculateBoard();
 }
 
 public void slider_iteration_changed(GSlider source, GEvent event) { 
@@ -214,13 +209,13 @@ public void txt_iteration_changed(GTextField source, GEvent event) {
 } 
 
 public void txt_seeds_changed(GTextField source, GEvent event) {  
-  int seeds;
+  int seeds; //<>//
   try{
-    seeds = int(txt_seeds.getText());
-    if(seeds <=100 && seeds >=0)
+    seeds = int(txt_seeds.getText()); //<>//
+    if(seeds <=100 && seeds >=0) //<>//
       {
-        if(seeds == 0)
-          println("Symulacja nie zostanie wykonana dla zerowej ilości ziaren. Upewnij się, że na planszy znajdują się ziarna.");
+        if(seeds == 0) //<>//
+          println("Symulacja nie zostanie wykonana dla zerowej ilości ziaren. Upewnij się, że na planszy znajdują się ziarna."); //<>//
         slider_seed.setValue(seeds);
         if(seedNumberInPercent!=seeds)
         {
@@ -241,11 +236,11 @@ public void txt_seeds_changed(GTextField source, GEvent event) {
            seedNumberInPercent = 0;
            initializeSeeds();
          }
-      println("Procentowa ilość ziaren musi być z przedziału 0-100");
+      information = "Procentowa ilość ziaren musi być z przedziału 1-100";
      }
   }
-  catch(Exception e){
-  println("Not a number!");
+  catch(NullPointerException e){
+    println("Not a number!");
   }
 } 
 
@@ -287,7 +282,7 @@ public void dl_simulation_chosen(GDropList source, GEvent event) {
 }
 
 public void tickIteration(){
-  iterationIndicatorN.setText(Integer.toString(iterationCnt) + "/" + txt_iteration.getText());
+  iterationIndicatorN.setText(Integer.toString(iterationCnt) + "/" + maxIterations);
   simulationInformation.setText(information);
   //simulationInformation.resizeToFit(true, false);
 }
@@ -369,19 +364,19 @@ public void createGUI(){
 
   //SIMULATION INFORMATION
   //Glabel( this, x_position, y_position, width, height)  
-  iterationIndicator = new GLabel(this, 650, 560, 70, 20);
+  iterationIndicator = new GLabel(this, 650, 760, 70, 20);
   iterationIndicator.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   iterationIndicator.setText("Iteracja:");
   iterationIndicator.setOpaque(true);
   iterationIndicator.setTextBold();
 
-  iterationIndicatorN = new GLabel(this, 720, 560, 70, 20);
+  iterationIndicatorN = new GLabel(this, 720, 760, 70, 20);
   iterationIndicatorN.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   iterationIndicatorN.setText(Integer.toString(iterationCnt));
   iterationIndicatorN.setOpaque(true);
   iterationIndicatorN.setTextBold();  
 
-  simulationInformation = new GLabel(this, 20, 560, 630, 20);
+  simulationInformation = new GLabel(this, 20, 760, 630, 20);
   simulationInformation.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   simulationInformation.setText(information);
   simulationInformation.setTextBold();
@@ -551,12 +546,12 @@ public void createGUI(){
             rbtn_cell10.setLocalColorScheme(GCScheme.CYAN_SCHEME);
             rbtn_cell10.setOpaque(true);
             rbtn_cell10.addEventHandler(this, "rbtn_cell10_clicked");      
-          rbtn_cell15 = new GOption(option_window, 370, 210, 120, 30);
-          rbtn_cell15.setIconAlign(GAlign.LEFT, GAlign.MIDDLE);
-          rbtn_cell15.setText("15x15");
-          rbtn_cell15.setLocalColorScheme(GCScheme.CYAN_SCHEME);
-          rbtn_cell15.setOpaque(true);
-          rbtn_cell15.addEventHandler(this, "rbtn_cell15_clicked");
+          rbtn_cell16 = new GOption(option_window, 370, 210, 120, 30);
+          rbtn_cell16.setIconAlign(GAlign.LEFT, GAlign.MIDDLE);
+          rbtn_cell16.setText("16x16");
+          rbtn_cell16.setLocalColorScheme(GCScheme.CYAN_SCHEME);
+          rbtn_cell16.setOpaque(true);
+          rbtn_cell16.addEventHandler(this, "rbtn_cell16_clicked");
             rbtn_cell20 = new GOption(option_window, 370, 240, 120, 30);
             rbtn_cell20.setIconAlign(GAlign.LEFT, GAlign.MIDDLE);
             rbtn_cell20.setText("20x20");
@@ -572,13 +567,13 @@ public void createGUI(){
         tog_group_cell.addControl(rbtn_cell5);
         rbtn_cell5.setSelected(true);
         tog_group_cell.addControl(rbtn_cell10);
-        tog_group_cell.addControl(rbtn_cell15);
+        tog_group_cell.addControl(rbtn_cell16);
         tog_group_cell.addControl(rbtn_cell20);
         tog_group_cell.addControl(rbtn_cell25);        
     //BOARD_SIZE
-    lbl_board_size = new GLabel(option_window, 510, 120, 170, 20);
+    lbl_board_size = new GLabel(option_window, 510, 120, 170, 30);
     lbl_board_size.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-    lbl_board_size.setText("Wymiary planszy");
+    lbl_board_size.setText("Wymiary planszy (OPCJA NIEDOSTĘPNA)");
     lbl_board_size.setTextBold();
     lbl_board_size.setLocalColorScheme(GCScheme.CYAN_SCHEME);
     lbl_board_size.setOpaque(true); 
@@ -618,7 +613,7 @@ public void createGUI(){
           slider_height.addEventHandler(this, "slider_height_changed");
           slider_height.setEnabled(false);
             txt_height = new GTextField(option_window, 600, 170, 80, 30, G4P.SCROLLBARS_NONE);
-            txt_height.setText("600");
+            txt_height.setText("800");
             txt_height.setLocalColorScheme(GCScheme.CYAN_SCHEME);
             txt_height.setOpaque(true);
             txt_height.addEventHandler(this, "txt_height_changed");
@@ -639,7 +634,7 @@ public void createGUI(){
     lbl_seed_limits.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
     lbl_seed_limits.setOpaque(true);    
       slider_seed = new GSlider(option_window, 180, 440, 150, 40, 10.0);
-      slider_seed.setLimits(1, 0, 100);
+      slider_seed.setLimits(1, 1, 100);
       slider_seed.setValue(45);
       slider_seed.setNbrTicks(100);
       slider_seed.setNumberFormat(G4P.INTEGER, 0);
@@ -759,7 +754,7 @@ GWindow option_window;
     GToggleGroup tog_group_cell; 
       GOption rbtn_cell5; 
       GOption rbtn_cell10; 
-      GOption rbtn_cell15; 
+      GOption rbtn_cell16; 
       GOption rbtn_cell20; 
       GOption rbtn_cell25;  
 

@@ -24,18 +24,22 @@ float step = 0.001;
 float[] rho;
 
 public void setup(){
-  size(800, 600, JAVA2D);  
+  size(800, 800, JAVA2D);  
   surface.setResizable(true);
+  calculateBoard();
+  setColours();
+  createGUI();    
+  stroke(48);   //grid enable
+ // noStroke(); //grid disable
+  noSmooth();  
+  calculateDensity();
+}
+
+void calculateBoard(){
   cells = new Cell[width/cellSize][height/cellSize];
   cellsBuffer = new Cell[width/cellSize][height/cellSize];
   lengthOfArray = (width/cellSize)*(height/cellSize);
-  setColours();
-  createGUI();    
-  //stroke(48);
-  noStroke();
-  noSmooth();  
   initializeSeeds();
-  calculateDensity();
 }
 
 void keyPressed() {
@@ -58,30 +62,24 @@ public void draw(){
   background(80);
   for (int x=0; x<width/cellSize; x++) {
     for (int y=0; y<height/cellSize; y++) {
-      if(cells[x][y].colour!=dead) {   
+      if(cells[x][y].colour!=dead)    
           fill(cells[x][y].colour);
-      }
-      else {                     
+      else       
           fill(dead);
-
-      }
       rect (x*cellSize, y*cellSize, cellSize, cellSize);
     }
   }  
   
-  if(iterationCnt < maxIterations){
+  if(iterationCnt < maxIterations && !limitReached){
     if (millis()-lastRecordedTime>interval) {
       if (!pause) {
         //STARTING SIMULATION //<>//
         iteration();                                  
         iterationCnt++;
         if(iterationCnt!=0)
-          information = "Trwa symulacja: " + simulationName;        
-        
-        //DEBUG
-        //pause = true;
-        
-       //STOPPING SIMULATION AT FULL BOARD
+          information = "Trwa symulacja " + simulationName;        
+       
+       //STOPPING MONTE CARLO SIMULATION AT FULL BOARD
        if(!simulationType.equals("monte")) {
           int aliveCells = 0;
           for(int i=0; i<width/cellSize; i++){
@@ -103,7 +101,16 @@ public void draw(){
           lastRecordedTime = millis();
         }
         else {
-          println("monte simulation");  
+          boolean unifiedColor = true;
+          for(int i=1; i<width/cellSize; i++){
+            for(int j=0; j<height/cellSize; j++){
+              color base = cells[0][0].colour;
+              if(cells[i][j].colour!=base)
+                unifiedColor = false;
+            }
+          }
+          if(unifiedColor)
+            limitReached = true; //<>//
         }
       }
       else if(iterationCnt == 0 && pause)
@@ -111,16 +118,13 @@ public void draw(){
       else if(iterationCnt!=maxIterations && pause)
         information = "Pauza aktywna. Kliknij start, by wznowić symulację.";      
     }
-  }
-  
-  else{
-    if(limitReached){
+  }  
+  else if(limitReached || iterationCnt == maxIterations){
       if(iterationCnt == 1)
         iterationString = " iteracji.";
       information = "Symulacja zakończona po " + iterationCnt + iterationString;
       pause = true;
     }
-  }
   tickIteration();
   
 }
@@ -155,39 +159,3 @@ void mouseClicked(){
     }
   }
 }
-/**
-1. Naiwny rozrost ziaren z sąsiedztwem:
-  a. Von Neumanna        --jest
-  b. Moore'a             --jest
-  c. Hexagonal left
-  d. Hexagonal right
-  e. Hexagonal random
-  f. Pentagonal random
-  
-2. Warunki brzegowe
-  a. periodyczne - zawijanie    vn, moore
-  b. nieperiodyczne - odbijające  vn, moore
-  
-3. Losowanie zarodków
-  a. losowe
-  b. równomierne - w każdym rzędzie i w każdej kolumnie tyle samo ??
-  c. losowe z promieniem R - od losowego ziarna dodajemy jeszcze R w około
-  d. przez kliknięcie
-  
- 
-  Do istniejącego GUI dodać:
-    Radiobutton group wyboru sąsiedztwa
-    Przycisk czyszczący planszę
-    Radiobutton group warunków brzegowych
-    Radiobutton group losowania zarodków
-    Możliwość ustawienia rozmiaru planszy
-              Rozmiar planszy - minimum 100x100, maksimum 1600x1200;        -- zmiana rozmiaru okna nie działa
-              Rozmiar komórki wybiera użytkownik - miedzy 30 a 5;  5, 10, 15, 20, 25, 30 - 6 opcji    -- zmiana rozmiaru komórki trochę działa
-              W zależności od rozmiaru komórki program proponuje rozmiar planszy (kwadrat) i ustawia skok co rozmiar komórki.     
-  
-  Zmiany w kodzie:
-  Wyłaczyć do osobnych funkcji:
-    Sprawdzanie sąsiedztw
-    Sprawdzanie warunków brzegowych
-    losowanie zarodków (b, c)
-*/
